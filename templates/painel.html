@@ -4,42 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel de Controle - Academia Força Local</title>
-
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-
 <body>
+
     <header>
         <h1>📊 Painel de Controle</h1>
-        <p>Resumo das previsões da Academia Força Local</p>
+        <p>Bem-vinda, Daiane! Aqui estão os dados atuais dos clientes.</p>
     </header>
 
     <main class="container">
-
-        <!-- 🔥 Cards de resumo -->
         <div class="cards">
-            <div class="card">
-                <h3>Total de Clientes</h3>
-                <p>{{ total }}</p>
-            </div>
-            <div class="card">
-                <h3>Clientes Seguros ✅</h3>
-                <p>{{ seguro }}</p>
-            </div>
-            <div class="card">
-                <h3>Clientes em Risco ⚠️</h3>
-                <p>{{ risco }}</p>
-            </div>
+            <div class="card">Total de Clientes: <strong>{{ total }}</strong></div>
+            <div class="card">Clientes Seguros: <strong>{{ seguro }}</strong></div>
+            <div class="card">Clientes em Risco: <strong>{{ risco }}</strong></div>
         </div>
 
-        <!-- 🔥 Gráfico de Barras -->
-        <div>
-            <canvas id="barChart" width="400" height="200"></canvas>
-        </div>
-
-        <!-- 🔥 Tabela -->
-        <h2>📋 Lista de Clientes</h2>
         <table>
             <thead>
                 <tr>
@@ -67,34 +47,11 @@
 
     </main>
 
-    <!-- 🔥 Script do Gráfico -->
-    <script>
-        const seguro = {{ seguro | tojson }};
-        const risco = {{ risco | tojson }};
+    <div class="botoes-container">
+        <a href="/" class="botao">🏠 Início</a>
+        <a href="/previsao" class="botao">🔮 Previsão</a>
+        <a href="/graficos" class="botao">📊 Gráficos</a>
+    </div>
 
-        const ctx = document.getElementById('barChart').getContext('2d');
-        const barChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Seguro', 'Risco'],
-                datasets: [{
-                    label: 'Clientes',
-                    data: [seguro, risco],
-                    backgroundColor: ['#22c55e', '#f97316']
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { display: false }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    </script>
 </body>
 </html>

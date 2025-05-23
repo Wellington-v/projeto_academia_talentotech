@@ -105,7 +105,6 @@ def predict():
     except Exception as e:
         return jsonify({'erro': str(e)})
 
-# 🧠 Painel de Controle
 @app.route('/painel')
 def painel():
     clientes = Cliente.query.all()
@@ -114,6 +113,7 @@ def painel():
     seguro = len([c for c in clientes if c.previsao and '✅' in c.previsao])
 
     return render_template('painel.html', clientes=clientes, total=total, risco=risco, seguro=seguro)
+
 
 # 🚀 Criar banco na primeira execução
 with app.app_context():
