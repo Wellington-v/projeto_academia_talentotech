@@ -11,8 +11,9 @@ app = Flask(__name__)
 MODEL_PATH = os.path.join('modelos', 'modelo_academia.pkl')
 DATA_PATH = os.path.join('dados', 'dados_academia.csv')
 
-# 🔥 Banco de Dados SQLite
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data/banco.db'
+# 🔥 Banco de Dados SQLite (corrigido)
+basedir = os.path.abspath(os.path.dirname(__file__))
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'dados', 'banco.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -25,6 +26,10 @@ class Cliente(db.Model):
     frequencia = db.Column(db.Integer)
     plano = db.Column(db.Integer)  # 0=Basic, 1=Premium
     previsao = db.Column(db.String(100))
+
+# 🔥 Garante que a pasta 'dados' existe
+if not os.path.exists(os.path.join(basedir, 'dados')):
+    os.makedirs(os.path.join(basedir, 'dados'))
 
 # 🔥 Carregar o modelo e o scaler
 try:
@@ -112,8 +117,6 @@ def painel():
 
 # 🚀 Criar banco na primeira execução
 with app.app_context():
-    if not os.path.exists('data'):
-        os.makedirs('data')
     db.create_all()
 
 # 🚀 Rodar o app
